@@ -153,3 +153,9 @@ arch/*/configs/vendor/*_defconfig
 # vendor device tree directories
 arch/arm64/boot/dts/vendor
 arch/arm/boot/dts/vendor
+
+# -----------------------------------------------------------------------------
+# Ignore all files and subdirectories inside the "out" directory
+# This directory contains generated build artifacts.
+# -----------------------------------------------------------------------------
+/out/
