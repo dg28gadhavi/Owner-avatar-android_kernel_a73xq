@@ -53,6 +53,10 @@
 #include "codecs/tfa9878/bigdata_tfa_sysfs_cb.h"
 #endif
 
+#include "codecs/tas256x/bigdata_tas_sysfs_cb.h"
+#include <sound/cirrus/big_data.h>
+#include <sound/samsung/bigdata_cirrus_sysfs_cb.h>
+
 #define DRV_NAME "lahaina-asoc-snd"
 #define __CHIPSET__ "LAHAINA "
 #define MSM_DAILINK_NAME(name) (__CHIPSET__#name)
@@ -7019,31 +7023,30 @@ static int lahaina_tdm_cirrus_init(struct snd_soc_pcm_runtime *rtd)
 	return 0;
 }
 #endif
-static int lahaina_mi2s_cirrus_init(struct snd_soc_pcm_runtime *rtd)
-{
-	struct snd_soc_dai **codec_dais = rtd->codec_dais;
+static int lahaina_mi2s_cirrus_init(struct snd_soc_pcm_runtime *rtd) __attribute__((unused));
 
-	struct snd_soc_dapm_context *dapm =
-		snd_soc_component_get_dapm(codec_dais[0]->component);
+static int lahaina_mi2s_cirrus_init(struct snd_soc_pcm_runtime *rtd) {
+    struct snd_soc_dai **codec_dais = rtd->codec_dais;
 
-	pr_info("%s: ++\n", __func__);
+    struct snd_soc_dapm_context *dapm =
+        snd_soc_component_get_dapm(codec_dais[0]->component);
+
+    pr_info("%s: ++\n", __func__);
 #if IS_ENABLED(CONFIG_SND_SOC_CS35L45)
-	snd_soc_dapm_ignore_suspend(dapm, "Mono Capture");
-	snd_soc_dapm_ignore_suspend(dapm, "Mono Playback");
-	snd_soc_dapm_ignore_suspend(dapm, "Mono SPK");
-	snd_soc_dapm_ignore_suspend(dapm, "Mono RCV");
-	snd_soc_dapm_ignore_suspend(dapm, "Mono AP");
-	snd_soc_dapm_ignore_suspend(dapm, "Mono AMP Enable");
-	snd_soc_dapm_ignore_suspend(dapm, "Mono Entry");
-	snd_soc_dapm_ignore_suspend(dapm, "Mono Exit");
+    snd_soc_dapm_ignore_suspend(dapm, "Mono Capture");
+    snd_soc_dapm_ignore_suspend(dapm, "Mono Playback");
+    snd_soc_dapm_ignore_suspend(dapm, "Mono SPK");
+    snd_soc_dapm_ignore_suspend(dapm, "Mono RCV");
+    snd_soc_dapm_ignore_suspend(dapm, "Mono AP");
+    snd_soc_dapm_ignore_suspend(dapm, "Mono AMP Enable");
+    snd_soc_dapm_ignore_suspend(dapm, "Mono Entry");
+    snd_soc_dapm_ignore_suspend(dapm, "Mono Exit");
 #endif
-	snd_soc_dapm_sync(dapm);
+    snd_soc_dapm_sync(dapm);
 
-	register_cirrus_bigdata_cb(codec_dais[0]->component);
-	return 0;
+    register_cirrus_bigdata_cb(codec_dais[0]->component);
+    return 0;
 }
-#endif
-
 #if IS_ENABLED(CONFIG_SND_SOC_TAS256x)
 static int lahaina_tas256x_init(struct snd_soc_pcm_runtime *rtd)
 {
